@@ -41,7 +41,8 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
-    '@nuxtjs/apollo'
+    '@nuxtjs/apollo',
+    '~/modules/nuxt-postgraphile'
   ],
 
   apollo: {
@@ -51,6 +52,10 @@ module.exports = {
         httpEndpoint: 'http://localhost:5000/graphql'
       }
     }
+  },
+
+  postgraphile: {
+    pgConfig: 'postgres://localhost:5432/cmty'
   },
 
   /*
