@@ -49,7 +49,7 @@ module.exports = {
     includeNodeModules: true,
     clientConfigs: {
       default: {
-        httpEndpoint: 'http://localhost:5000/graphql'
+        httpEndpoint: 'http://localhost:3000/postgraphile/graphql'
       }
     }
   },
