@@ -20,7 +20,7 @@ export default {
   apollo: {
     projects: {
       query: gql`{
-        projects(condition: { state: "accepted" }) {
+        projects(condition: { state: "accepted" }, first: 10) {
           nodes {
             name
             slug
