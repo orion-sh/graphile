@@ -1,13 +1,17 @@
 <template>
-  <section>
-    <pre>{{ projects.nodes }}</pre>
+  <section class="py-4">
+    <ProjectSummary v-for="project of projects.nodes" :key="project.slug" :project="project"/>
   </section>
 </template>
 
 <script>
+import ProjectSummary from '~/components/ProjectSummary'
 import gql from 'graphql-tag'
 
 export default {
+  components: {
+    ProjectSummary
+  },
   data () {
     return {
       projects: {}
@@ -16,15 +20,34 @@ export default {
   apollo: {
     projects: {
       query: gql`{
-        projects {
+        projects(condition: { state: "accepted" }) {
           nodes {
-            id
             name
             slug
             description
+            logo
+            releases {
+              totalCount
+            }
+            questions {
+              totalCount
+            }
+            bugs {
+              totalCount
+            }
+            features {
+              totalCount
+            }
+            contributions {
+              totalCount
+            }
+            commits {
+              totalCount
+            }
           }
         }
-      }`,
+      }
+      `,
     }
   }
 }
