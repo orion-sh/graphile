@@ -11,6 +11,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@graphile-contrib/pg-simplify-inflector": "^4.0.0-alpha.0",
     "@nuxtjs/apollo": "4.0.0-rc4",
     "nuxt": "^2.4.0",
     "postgraphile": "^4.3.3",

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <pre>{{ allProjects.nodes }}</pre>
+    <pre>{{ projects.nodes }}</pre>
   </section>
 </template>
 
@@ -10,13 +10,13 @@ import gql from 'graphql-tag'
 export default {
   data () {
     return {
-      allProjects: {}
+      projects: {}
     }
   },
   apollo: {
-    allProjects: {
+    projects: {
       query: gql`{
-        allProjects {
+        projects {
           nodes {
             id
             name

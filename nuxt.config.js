@@ -1,28 +1,20 @@
-const pkg = require('./package')
+import postgraphile from './config/postgraphile'
 
-
-module.exports = {
-  mode: 'universal',
-
+export default {
   /*
   ** Headers of the page
   */
   head: {
-    title: pkg.name,
+    title: 'CMTY with Graphile',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { hid: 'description', name: 'description', content: 'CMTY is a Collaboration Platform for Open Source Projects.' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-
-  /*
-  ** Customize the progress-bar color
-  */
-  loading: { color: '#fff' },
 
   /*
   ** Global CSS
@@ -54,9 +46,7 @@ module.exports = {
     }
   },
 
-  postgraphile: {
-    pgConfig: 'postgres://localhost:5432/cmty'
-  },
+  postgraphile,
 
   /*
   ** Build configuration
