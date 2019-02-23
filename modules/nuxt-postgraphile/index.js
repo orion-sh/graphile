@@ -1,30 +1,38 @@
 import { join } from 'path'
 import consola from 'consola'
-import { postgraphile } from 'postgraphile'
+import { postgraphile, makePluginHook } from 'postgraphile'
+import PGConsolaHookPlugin from './pg-plugins/consola'
 
 const logger = consola.withScope('postgraphile')
 
 export default function (moduleOptions) {
-  const options = this.options.postgraphile || moduleOptions || {}
+  const config = this.options.postgraphile || moduleOptions || {}
 
   // See https://www.graphile.org/postgraphile/usage-library/#api-postgraphilepgconfig-schemaname-options
-  options.pgConfig = options.pgConfig || 'postgres:///'
-  options.schemaName = options.schemaName || 'public'
-  options.options = options.options || {}
+  config.pgConfig = config.pgConfig || 'postgres:///'
+  config.schemaName = config.schemaName || 'public'
+  config.options = config.options || {}
   // Activate graphiql on dev
-  if (this.options.dev && typeof options.options.graphiql === 'undefined') {
-    options.options.graphiql = true
+  if (this.options.dev && typeof config.options.graphiql === 'undefined') {
+    config.options.graphiql = true
   }
   // Activate enhanceGraphiql graphiql on dev
-  if (this.options.dev && typeof options.options.enhanceGraphiql === 'undefined') {
-    options.options.enhanceGraphiql = true
+  if (this.options.dev && typeof config.options.enhanceGraphiql === 'undefined') {
+    config.options.enhanceGraphiql = true
   }
+  // options.pluginHook
+  const hookPlugins = config.options.hookPlugins || []
+  // Add consola hook plugin
+  hookPlugins.push(PGConsolaHookPlugin({ logger }))
+  // Generate options.pluginHook
+  config.options.pluginHook = makePluginHook(hookPlugins)
 
-  // Add middleware
-  logger.info(`Connecting PostGraphile to ${options.pgConfig}`)
+  // Add server middleware
+  // TODO: Use Nuxt workers + watch postgraphile files related to restart own worker
+  logger.info(`Connecting PostGraphile to ${config.pgConfig}`)
   this.addServerMiddleware({
     path: '/postgraphile',
-    handler: postgraphile(options.pgConfig, options.schemaName, options.options)
+    handler: postgraphile(config.pgConfig, config.schemaName, config.options)
   })
 
   // Log server infos
@@ -32,7 +40,7 @@ export default function (moduleOptions) {
     const serverUrl = `http${https ? 's' : ''}://${host}:${port}/postgraphile`
 
     logger.info(`GraphQL endpoint: ${serverUrl}/graphql`)
-    if (options.options.graphiql) {
+    if (config.options.graphiql) {
       logger.info(`GraphQL UI endpoint: ${serverUrl}/graphiql`)
     }
   })
