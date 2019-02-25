@@ -1,5 +1,6 @@
 import { join } from 'path'
 import consola from 'consola'
+import chalk from 'chalk'
 import { postgraphile, makePluginHook } from 'postgraphile'
 import PGConsolaHookPlugin from './pg-plugins/consola'
 
@@ -10,6 +11,7 @@ export default function (moduleOptions) {
 
   // See https://www.graphile.org/postgraphile/usage-library/#api-postgraphilepgconfig-schemaname-options
   config.pgConfig = config.pgConfig || 'postgres:///'
+  // Learn about namespaces: https://www.graphile.org/postgraphile/namespaces/
   config.schemaName = config.schemaName || 'public'
   config.options = config.options || {}
   // Activate graphiql on dev
@@ -36,12 +38,12 @@ export default function (moduleOptions) {
   })
 
   // Log server infos
-  this.nuxt.hook('listen', (server, { host, port, https }) => {
+  this.nuxt.hook('listen', (server, { https, host, port }) => {
     const serverUrl = `http${https ? 's' : ''}://${host}:${port}/postgraphile`
 
-    logger.info(`GraphQL endpoint: ${serverUrl}/graphql`)
+    this.options.cli.badgeMessages.push(`${chalk.cyan('GraphQL')}: ${serverUrl}/graphql`)
     if (config.options.graphiql) {
-      logger.info(`GraphQL UI endpoint: ${serverUrl}/graphiql`)
+      this.options.cli.badgeMessages.push(`${chalk.magenta('GraphiQL')}: ${serverUrl}/graphiql`)
     }
   })
 }
