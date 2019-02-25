@@ -4,7 +4,7 @@
       <img class="block h-16 sm:h-24 mx-auto mb-4 sm:mb-0 sm:mr-4 sm:ml-0" :src="project.logo" :alt="project.name">
       <div class="text-center sm:text-left sm:flex-grow">
         <div class="mb-4">
-          <p class="text-xl leading-tight">{{ project.name }}</p>
+          <p class="text-xl leading-tight"><n-link :to="{ name: 'projects-slug', params: { slug: project.slug } }">{{ project.name }}</n-link></p>
           <p class="text-sm leading-tight text-grey-dark">{{ project.description }}</p>
         </div>
         <div>
